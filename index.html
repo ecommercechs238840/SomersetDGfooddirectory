@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orchard Bites — F&B Directory near Concorde Hotel Singapore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF4EC;
+    --card:#FFFDFA;
+    --rose:#F3D4CE;
+    --rose-deep:#E7A99D;
+    --sage:#C7DEC6;
+    --sage-deep:#8FB48F;
+    --lavender:#E3D7EF;
+    --lavender-deep:#B79FD1;
+    --mustard:#F3D98A;
+    --mustard-deep:#D9A93C;
+    --ink:#463C3F;
+    --ink-soft:#7A6E70;
+    --line:#EFE1D6;
+    --radius:18px;
+    --shadow: 0 6px 20px rgba(180,140,120,0.12);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Nunito',sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Fraunces',serif;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+
+  /* ---------- Header / Transit motif ---------- */
+  header{
+    background:linear-gradient(180deg,#FFF9F2 0%, var(--cream) 100%);
+    padding:28px 20px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .header-inner{max-width:1080px;margin:0 auto;}
+  .eyebrow{
+    font-size:12.5px;
+    font-weight:800;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--rose-deep);
+    margin:0 0 6px;
+  }
+  h1.title{
+    font-size:clamp(28px,4vw,40px);
+    font-weight:600;
+    margin:0 0 6px;
+    color:#3A3238;
+  }
+  .subtitle{
+    color:var(--ink-soft);
+    font-size:15.5px;
+    margin:0 0 22px;
+    max-width:640px;
+    line-height:1.5;
+  }
+
+  /* transit line */
+  .transit{
+    display:flex;
+    align-items:center;
+    gap:0;
+    margin:18px 0 24px;
+    overflow-x:auto;
+    padding-bottom:6px;
+  }
+  .transit-track{
+    display:flex;
+    align-items:center;
+    position:relative;
+    min-width:640px;
+    width:100%;
+  }
+  .transit-track::before{
+    content:"";
+    position:absolute;
+    top:9px;
+    left:14px;
+    right:14px;
+    height:3px;
+    background:repeating-linear-gradient(90deg,var(--rose-deep) 0 10px, transparent 10px 16px);
+    border-radius:3px;
+  }
+  .stop{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    position:relative;
+    z-index:1;
+    cursor:pointer;
+    background:none;
+    border:none;
+    font-family:'Nunito',sans-serif;
+    padding:0;
+  }
+  .stop .dot{
+    width:20px;height:20px;
+    border-radius:50%;
+    background:var(--card);
+    border:3px solid var(--rose-deep);
+    margin-bottom:8px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .stop.active .dot{background:var(--rose-deep); transform:scale(1.15);}
+  .stop .label{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    text-align:center;
+    line-height:1.25;
+  }
+  .stop.active .label{color:var(--ink);}
+  .stop .sub{font-size:10.5px;color:var(--ink-soft);opacity:.8;}
+
+  /* ---------- Controls ---------- */
+  .controls{
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    align-items:center;
+  }
+  .search-wrap{
+    flex:1 1 320px;
+    position:relative;
+  }
+  .search-wrap input{
+    width:100%;
+    padding:14px 18px 14px 44px;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:var(--card);
+    font-family:'Nunito',sans-serif;
+    font-size:15px;
+    color:var(--ink);
+    outline:none;
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  .search-wrap input:focus{
+    border-color:var(--rose-deep);
+    box-shadow:0 0 0 4px rgba(231,169,157,0.18);
+  }
+  .search-wrap svg{
+    position:absolute; left:16px; top:50%; transform:translateY(-50%);
+    width:18px;height:18px; color:var(--ink-soft);
+  }
+
+  .halal-toggle{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:var(--card);
+    border:1.5px solid var(--line);
+    padding:9px 16px 9px 14px;
+    border-radius:999px;
+    font-weight:700;
+    font-size:14.5px;
+    cursor:pointer;
+    user-select:none;
+    flex-shrink:0;
+  }
+  .switch{
+    width:38px;height:22px;border-radius:999px;background:#E4D8CB;position:relative;transition:background .18s ease;flex-shrink:0;
+  }
+  .switch::after{
+    content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(0,0,0,0.2);
+    transition:transform .18s ease;
+  }
+  .halal-toggle.on .switch{background:var(--sage-deep);}
+  .halal-toggle.on .switch::after{transform:translateX(16px);}
+  .halal-toggle .moon{font-size:15px;}
+
+  /* filter chip rows */
+  .filter-block{max-width:1080px;margin:18px auto 0; padding:0 20px;}
+  .filter-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top:12px;
+  }
+  .filter-label{
+    font-size:11.5px;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:0.09em;
+    color:var(--ink-soft);
+    margin-top:16px;
+    margin-bottom:2px;
+  }
+  .chip{
+    padding:7px 14px;
+    border-radius:999px;
+    border:1.5px solid var(--line);
+    background:var(--card);
+    font-size:13.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    cursor:pointer;
+    transition:all .15s ease;
+    white-space:nowrap;
+  }
+  .chip:hover{border-color:var(--rose-deep);}
+  .chip.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:#fff;
+  }
+  .chip.active.mall-sage{background:var(--sage-deep); border-color:var(--sage-deep);}
+  .chip.active.mall-lav{background:var(--lavender-deep); border-color:var(--lavender-deep);}
+  .chip.active.mall-mus{background:var(--mustard-deep); border-color:var(--mustard-deep);}
+  .chip.active.mall-rose{background:var(--rose-deep); border-color:var(--rose-deep);}
+
+  /* ---------- Main / results ---------- */
+  main{max-width:1080px;margin:0 auto;padding:24px 20px 60px;}
+  .results-meta{
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:16px;
+    color:var(--ink-soft);
+    font-size:13.5px;
+    font-weight:700;
+  }
+  .mall-group{margin-bottom:34px;}
+  .mall-heading{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    margin-bottom:4px;
+  }
+  .mall-heading h2{
+    font-size:21px;
+    font-weight:600;
+    margin:0;
+  }
+  .mall-heading .count{
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--ink-soft);
+    background:var(--card);
+    border:1px solid var(--line);
+    padding:2px 10px;
+    border-radius:999px;
+  }
+  .mall-addr{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 16px;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+    gap:16px;
+  }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:18px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .card:hover{transform:translateY(-3px); box-shadow:0 10px 26px rgba(180,140,120,0.18);}
+
+  .card-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px;}
+  .card-top h3{
+    font-size:17.5px;
+    font-weight:600;
+    margin:0;
+    line-height:1.25;
+  }
+  .halal-badge{
+    flex-shrink:0;
+    background:var(--sage);
+    color:#3D5C3E;
+    font-size:11px;
+    font-weight:800;
+    padding:4px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .unit{
+    font-size:12.5px;
+    color:var(--ink-soft);
+    font-weight:700;
+  }
+  .tag-row{display:flex; flex-wrap:wrap; gap:6px;}
+  .tag{
+    font-size:11.5px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:999px;
+  }
+  .tag.cuisine{background:var(--lavender); color:#5B3F80;}
+  .tag.type{background:var(--rose); color:#8C3F30;}
+  .tag.online{background:var(--mustard); color:#7A5A05;}
+
+  .card-info{
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.5;
+    border-top:1px dashed var(--line);
+    padding-top:10px;
+    margin-top:2px;
+  }
+  .card-info b{color:var(--ink); font-weight:800;}
+
+  .card-actions{
+    display:flex;
+    gap:8px;
+    margin-top:4px;
+    flex-wrap:wrap;
+  }
+  .btn{
+    flex:1;
+    text-align:center;
+    padding:9px 10px;
+    border-radius:11px;
+    font-size:13px;
+    font-weight:800;
+    text-decoration:none;
+    cursor:pointer;
+    border:1.5px solid transparent;
+    transition:opacity .15s ease, transform .1s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{
+    background:var(--ink);
+    color:#fff;
+  }
+  .btn-primary:hover{opacity:.85;}
+  .btn-outline{
+    background:transparent;
+    border-color:var(--line);
+    color:var(--ink);
+  }
+  .btn-outline:hover{border-color:var(--rose-deep); color:var(--rose-deep);}
+  .btn-disabled{
+    background:#F1E9DF;
+    color:var(--ink-soft);
+    cursor:default;
+  }
+
+  .no-results{
+    text-align:center;
+    padding:60px 20px;
+    color:var(--ink-soft);
+  }
+  .no-results .display{font-size:22px; color:var(--ink); margin-bottom:8px;}
+
+  footer{
+    max-width:1080px;
+    margin:0 auto;
+    padding:0 20px 50px;
+    color:var(--ink-soft);
+    font-size:12.5px;
+    line-height:1.6;
+  }
+  footer .note-box{
+    background:#FFF9F2;
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+  }
+
+  ::selection{background:var(--rose); color:var(--ink);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <p class="eyebrow">Dhoby Ghaut · Somerset · Orchard Road</p>
+    <h1 class="title">Orchard Bites</h1>
+    <p class="subtitle">A food &amp; beverage directory for the malls within walking distance of Concorde Hotel Singapore — from Dhoby Ghaut MRT down to Somerset MRT.</p>
+
+    <nav class="transit" aria-label="Mall quick jump">
+      <div class="transit-track" id="transitTrack">
+        <button class="stop active" data-mall="all">
+          <span class="dot"></span>
+          <span class="label">All malls</span>
+          <span class="sub">45 outlets</span>
+        </button>
+        <button class="stop" data-mall="Plaza Singapura">
+          <span class="dot"></span>
+          <span class="label">Plaza Singapura</span>
+          <span class="sub">Dhoby Ghaut</span>
+        </button>
+        <button class="stop" data-mall="Concorde Shopping Mall">
+          <span class="dot"></span>
+          <span class="label">Concorde Shopping Mall</span>
+          <span class="sub">@ the hotel</span>
+        </button>
+        <button class="stop" data-mall="313@Somerset">
+          <span class="dot"></span>
+          <span class="label">313@Somerset</span>
+          <span class="sub">Somerset</span>
+        </button>
+        <button class="stop" data-mall="Orchard Gateway">
+          <span class="dot"></span>
+          <span class="label">Orchard Gateway</span>
+          <span class="sub">Somerset</span>
+        </button>
+      </div>
+    </nav>
+
+    <div class="controls">
+      <div class="search-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder="Search by outlet, cuisine, or shop number…" autocomplete="off">
+      </div>
+      <div class="halal-toggle" id="halalToggle">
+        <span class="switch"></span>
+        <span>Halal only</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="filter-block">
+    <div class="filter-label">Cuisine</div>
+    <div class="filter-row" id="cuisineFilters"></div>
+    <div class="filter-label">Type</div>
+    <div class="filter-row" id="typeFilters"></div>
+  </div>
+</header>
+
+<main>
+  <div class="results-meta">
+    <span id="resultsCount">Showing all outlets</span>
+    <span id="clearFilters" style="cursor:pointer; text-decoration:underline; display:none;">Clear filters</span>
+  </div>
+  <div id="resultsWrap"></div>
+</main>
+
+<footer>
+  <div class="note-box">
+    <b>Prototype note:</b> This directory was compiled from publicly available mall and restaurant listings to demonstrate the site's features (search, halal filter, cuisine/type tags, reservation &amp; ordering links). Shop unit numbers, phone lines and halal status change as tenants rotate — please treat entries marked "unit TBC" or "unverified" as placeholders, and confirm details with each outlet or the mall's official directory before publishing live.
+  </div>
+</footer>
+
+<script>
+const DATA = [
+  // ---------------- PLAZA SINGAPURA ----------------
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Five Guys", unit:"#01-K1, Level 1 (unit TBC)", cuisine:"American", type:"Fast Food", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.fiveguys.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tim Ho Wan", unit:"Level 1–2 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://timhowan.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nando's", unit:"Level 2 (unit TBC)", cuisine:"Western", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in / large groups call ahead", website:"https://www.nandos.com.sg", online:"Nando's App / GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Genki Sushi", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.genkisushi.com.sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Hai Di Lao Hot Pot", unit:"Level 3–4 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ichiban Boshi", unit:"Level 1–2 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.sakaeholdings.com", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tiong Bahru Bakery", unit:"B1–B2 (unit TBC)", cuisine:"Bakery & Cafe", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://tiongbahrubakery.com", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nana's Green Tea", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.nanasgreentea.com/sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Go-Ang Pratunam Chicken Rice", unit:"B2 (unit TBC)", cuisine:"Thai", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only, expect queues", website:"https://www.instagram.com/goangsg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Cajun On Wheels", unit:"B2 (unit TBC)", cuisine:"Seafood", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cajunonwheels", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Co Chung Restaurant", unit:"B2 (unit TBC)", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cochungsg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Da Xi", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/daxisg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Seorae Jib", unit:"Level 4 (unit TBC)", cuisine:"Korean", type:"Restaurant", halal:false, phone:"", reserveNote:"Reservation recommended, call outlet", website:"https://www.instagram.com/seoraejibsg", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ba Shu Sichuan Restaurant", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/bashusichuan", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Keming Bing Sat", unit:"Level 2 (unit TBC)", cuisine:"Hong Kong", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/kemingbingsat", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"GyoGyo Japanese Grilled Fish & Sukiyaki", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/gyogyo.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Bizen Wagyu & Salad Bar", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.bizen.com.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nunsaram Korean Dessert Cafe", unit:"Level 2 (unit TBC)", cuisine:"Korean", type:"Dessert", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/nunsaram.sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Café & Meal MUJI", unit:"Level 1 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.muji.com.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tsukada Nojo", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/tsukadanojosg", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Arteastiq DePatio", unit:"Level 1 (unit TBC)", cuisine:"Western", type:"Cafe", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.arteastiq.com", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Mamma Mia Trattoria E Caffè", unit:"Level 1–2 (unit TBC)", cuisine:"Italian", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/mammamiasg", online:"Not available"},
+
+  // ---------------- CONCORDE SHOPPING MALL ----------------
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Gayatri Restaurant", unit:"#01-05", cuisine:"Indian", type:"Restaurant", halal:false, phone:"6732 5273", reserveNote:"Call to reserve", website:"", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Moe Moe Sandwich", unit:"#02-62", cuisine:"Cafe Bites", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Yakinikutei Ao-Chan", unit:"#02-22/26", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"6735 6457", reserveNote:"Call to reserve", website:"", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Spices Cafe (Concorde Hotel)", unit:"Concorde Hotel, Level 2", cuisine:"Peranakan / Local", type:"Restaurant", halal:false, phone:"6733 8855", reserveNote:"Call or reserve via hotel website", website:"https://www.concorde.com.sg/singapore/spices-cafe", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Concorde Hotel Basement Food Court", unit:"Basement", cuisine:"Multi-cuisine", type:"Food Court", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+
+  // ---------------- 313@SOMERSET ----------------
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Haidilao Hot Pot", unit:"B3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Marché Mövenpick", unit:"#01-40", cuisine:"Western", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.marche-mövenpick.com", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Tan Yu", unit:"#B3-30-32", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.tanyu.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Privé", unit:"#01-28", cuisine:"Western", type:"Bar & Grill", halal:false, phone:"", reserveNote:"Reservation recommended, book via website", website:"https://www.theprivegroup.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Food Republic", unit:"#05-01-03", cuisine:"Multi-cuisine", type:"Food Court", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.foodrepublic.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chir Chir Fusion Chicken Factory", unit:"#B3-05/06", cuisine:"Korean", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chirchirsg", online:"GrabFood"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Go Noodle House", unit:"#B3-37/38", cuisine:"Asian", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Mrs Pho", unit:"#01-16/17", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/mrsphosg", online:"foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Sushi Express", unit:"#B3-28/29", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.sushiexpress.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"The Coffee Academïcs", unit:"#01-25/25A", cuisine:"Cafe Bites", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://thecoffeeacademics.com", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chimi's", unit:"Al fresco, near H&M (unit TBC)", cuisine:"Mexican", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chimis.sg", online:"GrabFood"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"JiBiru Yakitori & Craft Beer", unit:"Discovery Walk, al fresco (unit TBC)", cuisine:"Japanese", type:"Bar", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/jibiru.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Rocky Master", unit:"#B3-35/36", cuisine:"Asian & Western Fusion", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/rockymastersg", online:"GrabFood / foodpanda"},
+
+  // ---------------- ORCHARD GATEWAY ----------------
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"4Fingers Crispy Chicken", unit:"#01-04/05", cuisine:"Asian", type:"Fast Food", halal:true, phone:"6384 0471", reserveNote:"Walk-in only", website:"https://4fingers.com", online:"GrabFood / foodpanda"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Nong Geng Ji", unit:"#B1-13", cuisine:"Chinese (Hunan)", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.nonggengji.com.sg", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Yang Xiao Xian", unit:"#B1-12", cuisine:"Taiwanese", type:"Dessert", halal:false, phone:"9035 6741", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Chan Susu 1994", unit:"#01-10", cuisine:"Beverages & Dessert", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Signs A Taste of Vietnam Pho", unit:"#B2-15", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Sultan Curry", unit:"Unit TBC", cuisine:"Indian Muslim", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Now Pizza", unit:"Unit TBC", cuisine:"Fast Food", type:"Fast Food", halal:true, phone:"", reserveNote:"Walk-in only", website:"", online:"GrabFood / foodpanda"},
+];
+
+const mallOrder = ["Plaza Singapura","Concorde Shopping Mall","313@Somerset","Orchard Gateway"];
+const mallColorClass = {
+  "Plaza Singapura":"mall-rose",
+  "Concorde Shopping Mall":"mall-mus",
+  "313@Somerset":"mall-sage",
+  "Orchard Gateway":"mall-lav"
+};
+
+let state = { search:"", halal:false, mall:"all", cuisine:"all", type:"all" };
+
+function uniqueSorted(arr){ return [...new Set(arr)].sort(); }
+
+function buildFilterChips(){
+  const cuisines = uniqueSorted(DATA.map(d=>d.cuisine));
+  const types = uniqueSorted(DATA.map(d=>d.type));
+  const cWrap = document.getElementById('cuisineFilters');
+  const tWrap = document.getElementById('typeFilters');
+
+  cWrap.innerHTML = '<button class="chip active" data-filter="cuisine" data-value="all">All cuisines</button>' +
+    cuisines.map(c=>`<button class="chip" data-filter="cuisine" data-value="${c}">${c}</button>`).join('');
+  tWrap.innerHTML = '<button class="chip active" data-filter="type" data-value="all">All types</button>' +
+    types.map(t=>`<button class="chip" data-filter="type" data-value="${t}">${t}</button>`).join('');
+
+  document.querySelectorAll('.chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const filter = chip.dataset.filter;
+      const value = chip.dataset.value;
+      state[filter] = value;
+      document.querySelectorAll(`.chip[data-filter="${filter}"]`).forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      render();
+    });
+  });
+}
+
+function matches(item){
+  if(state.halal && !item.halal) return false;
+  if(state.mall !== "all" && item.mall !== state.mall) return false;
+  if(state.cuisine !== "all" && item.cuisine !== state.cuisine) return false;
+  if(state.type !== "all" && item.type !== state.type) return false;
+  if(state.search){
+    const q = state.search.toLowerCase();
+    const hay = `${item.name} ${item.cuisine} ${item.type} ${item.unit} ${item.mall}`.toLowerCase();
+    if(!hay.includes(q)) return false;
+  }
+  return true;
+}
+
+function reserveButton(item){
+  if(item.phone){
+    return `<a class="btn btn-outline" href="tel:${item.phone.replace(/\\s/g,'')}">Call ${item.phone}</a>`;
+  }
+  if(item.reserveNote && item.reserveNote.toLowerCase().includes('chope')){
+    return `<a class="btn btn-outline" href="https://www.chope.co/singapore-restaurants/search?q=${encodeURIComponent(item.name)}" target="_blank" rel="noopener">Reserve via Chope</a>`;
+  }
+  return `<span class="btn btn-disabled">${item.reserveNote || 'Walk-in only'}</span>`;
+}
+
+function websiteButton(item){
+  if(item.website){
+    return `<a class="btn btn-primary" href="${item.website}" target="_blank" rel="noopener">Menu / Website ↗</a>`;
+  }
+  return `<span class="btn btn-disabled">No website listed</span>`;
+}
+
+function card(item){
+  const onlineTag = item.online && item.online !== "Not available"
+    ? `<span class="tag online">🛵 ${item.online}</span>` : '';
+  return `
+    <div class="card">
+      <div class="card-top">
+        <h3>${item.name}</h3>
+        ${item.halal ? '<span class="halal-badge">✓ Halal</span>' : ''}
+      </div>
+      <div class="unit">📍 ${item.unit}</div>
+      <div class="tag-row">
+        <span class="tag cuisine">${item.cuisine}</span>
+        <span class="tag type">${item.type}</span>
+        ${onlineTag}
+      </div>
+      <div class="card-info"><b>Reservation:</b> ${item.reserveNote || 'Walk-in only'}</div>
+      <div class="card-actions">
+        ${reserveButton(item)}
+        ${websiteButton(item)}
+      </div>
+    </div>
+  `;
+}
+
+function render(){
+  const filtered = DATA.filter(matches);
+  const wrap = document.getElementById('resultsWrap');
+  const countEl = document.getElementById('resultsCount');
+  const clearEl = document.getElementById('clearFilters');
+
+  const anyFilterActive = state.search || state.halal || state.mall!=="all" || state.cuisine!=="all" || state.type!=="all";
+  clearEl.style.display = anyFilterActive ? 'inline' : 'none';
+
+  countEl.textContent = `Showing ${filtered.length} of ${DATA.length} outlets`;
+
+  if(filtered.length === 0){
+    wrap.innerHTML = `<div class="no-results"><div class="display">No outlets match your search</div>Try clearing a filter or searching a different keyword.</div>`;
+    return;
+  }
+
+  const mallsToShow = state.mall === "all" ? mallOrder : [state.mall];
+  let html = '';
+  mallsToShow.forEach(mallName=>{
+    const items = filtered.filter(i=>i.mall === mallName);
+    if(items.length === 0) return;
+    const meta = DATA.find(d=>d.mall===mallName);
+    html += `
+      <section class="mall-group">
+        <div class="mall-heading">
+          <h2>${mallName}</h2>
+          <span class="count">${items.length}</span>
+        </div>
+        <p class="mall-addr">${meta.addr}</p>
+        <div class="grid">
+          ${items.map(card).join('')}
+        </div>
+      </section>
+    `;
+  });
+  wrap.innerHTML = html;
+}
+
+// ---- Wire up controls ----
+document.getElementById('searchInput').addEventListener('input', e=>{
+  state.search = e.target.value.trim();
+  render();
+});
+
+const halalToggle = document.getElementById('halalToggle');
+halalToggle.addEventListener('click', ()=>{
+  state.halal = !state.halal;
+  halalToggle.classList.toggle('on', state.halal);
+  render();
+});
+
+document.querySelectorAll('.stop').forEach(stop=>{
+  stop.addEventListener('click', ()=>{
+    state.mall = stop.dataset.mall;
+    document.querySelectorAll('.stop').forEach(s=>s.classList.remove('active'));
+    stop.classList.add('active');
+    render();
+  });
+});
+
+document.getElementById('clearFilters').addEventListener('click', ()=>{
+  state = { search:"", halal:false, mall:"all", cuisine:"all", type:"all" };
+  document.getElementById('searchInput').value = "";
+  halalToggle.classList.remove('on');
+  document.querySelectorAll('.stop').forEach(s=>s.classList.remove('active'));
+  document.querySelector('.stop[data-mall="all"]').classList.add('active');
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  document.querySelector('.chip[data-filter="cuisine"][data-value="all"]').classList.add('active');
+  document.querySelector('.chip[data-filter="type"][data-value="all"]').classList.add('active');
+  render();
+});
+
+buildFilterChips();
+render();
+</script>
+</body>
+</html>
