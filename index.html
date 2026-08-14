@@ -18,6 +18,8 @@
     --lavender-deep:#B79FD1;
     --mustard:#F3D98A;
     --mustard-deep:#D9A93C;
+    --leaf:#D3E4C5;
+    --leaf-deep:#6E9A4F;
     --ink:#463C3F;
     --ink-soft:#7A6E70;
     --line:#EFE1D6;
@@ -184,6 +186,12 @@
   .halal-toggle.on .switch::after{transform:translateX(16px);}
   .halal-toggle .moon{font-size:15px;}
 
+  .veg-toggle.on .switch{background:var(--leaf-deep);}
+  .veg-toggle.on .switch::after{transform:translateX(16px);}
+
+  .bev-toggle.on .switch{background:var(--mustard-deep);}
+  .bev-toggle.on .switch::after{transform:translateX(16px);}
+
   /* filter chip rows */
   .filter-block{max-width:1080px;margin:18px auto 0; padding:0 20px;}
   .filter-row{
@@ -296,6 +304,17 @@
     border-radius:999px;
     white-space:nowrap;
   }
+  .veg-badge{
+    flex-shrink:0;
+    background:var(--leaf);
+    color:#3B5A25;
+    font-size:11px;
+    font-weight:800;
+    padding:4px 9px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .badge-row{display:flex; flex-direction:column; align-items:flex-end; gap:5px; flex-shrink:0;}
   .unit{
     font-size:12.5px;
     color:var(--ink-soft);
@@ -400,7 +419,7 @@
         <button class="stop active" data-mall="all">
           <span class="dot"></span>
           <span class="label">All malls</span>
-          <span class="sub">45 outlets</span>
+          <span class="sub">56 outlets</span>
         </button>
         <button class="stop" data-mall="Plaza Singapura">
           <span class="dot"></span>
@@ -422,6 +441,11 @@
           <span class="label">Orchard Gateway</span>
           <span class="sub">Somerset</span>
         </button>
+        <button class="stop" data-mall="Orchard Central">
+          <span class="dot"></span>
+          <span class="label">Orchard Central</span>
+          <span class="sub">Somerset</span>
+        </button>
       </div>
     </nav>
 
@@ -433,6 +457,14 @@
       <div class="halal-toggle" id="halalToggle">
         <span class="switch"></span>
         <span>Halal only</span>
+      </div>
+      <div class="halal-toggle veg-toggle" id="vegToggle">
+        <span class="switch"></span>
+        <span>Vegetarian-friendly</span>
+      </div>
+      <div class="halal-toggle bev-toggle" id="bevToggle">
+        <span class="switch"></span>
+        <span>🧋 Beverages only</span>
       </div>
     </div>
   </div>
@@ -462,70 +494,82 @@
 <script>
 const DATA = [
   // ---------------- PLAZA SINGAPURA ----------------
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Five Guys", unit:"#01-K1, Level 1 (unit TBC)", cuisine:"American", type:"Fast Food", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.fiveguys.com.sg", online:"GrabFood / foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tim Ho Wan", unit:"Level 1–2 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://timhowan.com.sg", online:"GrabFood / foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nando's", unit:"Level 2 (unit TBC)", cuisine:"Western", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in / large groups call ahead", website:"https://www.nandos.com.sg", online:"Nando's App / GrabFood"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Genki Sushi", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.genkisushi.com.sg", online:"foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Hai Di Lao Hot Pot", unit:"Level 3–4 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ichiban Boshi", unit:"Level 1–2 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.sakaeholdings.com", online:"GrabFood"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tiong Bahru Bakery", unit:"B1–B2 (unit TBC)", cuisine:"Bakery & Cafe", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://tiongbahrubakery.com", online:"GrabFood / foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nana's Green Tea", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.nanasgreentea.com/sg", online:"foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Go-Ang Pratunam Chicken Rice", unit:"B2 (unit TBC)", cuisine:"Thai", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only, expect queues", website:"https://www.instagram.com/goangsg", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Cajun On Wheels", unit:"B2 (unit TBC)", cuisine:"Seafood", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cajunonwheels", online:"GrabFood / foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Co Chung Restaurant", unit:"B2 (unit TBC)", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cochungsg", online:"foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Da Xi", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/daxisg", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Seorae Jib", unit:"Level 4 (unit TBC)", cuisine:"Korean", type:"Restaurant", halal:false, phone:"", reserveNote:"Reservation recommended, call outlet", website:"https://www.instagram.com/seoraejibsg", online:"GrabFood"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ba Shu Sichuan Restaurant", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/bashusichuan", online:"foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Keming Bing Sat", unit:"Level 2 (unit TBC)", cuisine:"Hong Kong", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/kemingbingsat", online:"GrabFood"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"GyoGyo Japanese Grilled Fish & Sukiyaki", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/gyogyo.sg", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Bizen Wagyu & Salad Bar", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.bizen.com.sg", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nunsaram Korean Dessert Cafe", unit:"Level 2 (unit TBC)", cuisine:"Korean", type:"Dessert", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/nunsaram.sg", online:"foodpanda"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Café & Meal MUJI", unit:"Level 1 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.muji.com.sg", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tsukada Nojo", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/tsukadanojosg", online:"GrabFood"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Arteastiq DePatio", unit:"Level 1 (unit TBC)", cuisine:"Western", type:"Cafe", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.arteastiq.com", online:"Not available"},
-  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Mamma Mia Trattoria E Caffè", unit:"Level 1–2 (unit TBC)", cuisine:"Italian", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/mammamiasg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Five Guys", unit:"#01-K1, Level 1 (unit TBC)", cuisine:"American", type:"Fast Food", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.fiveguys.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tim Ho Wan", unit:"Level 1–2 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://timhowan.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nando's", unit:"Level 2 (unit TBC)", cuisine:"Western", type:"Restaurant", halal:true, veg:false, phone:"", reserveNote:"Walk-in / large groups call ahead", website:"https://www.nandos.com.sg", online:"Nando's App / GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Genki Sushi", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.genkisushi.com.sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Hai Di Lao Hot Pot", unit:"Level 3–4 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, veg:false, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ichiban Boshi", unit:"Level 1–2 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.sakaeholdings.com", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tiong Bahru Bakery", unit:"B1–B2 (unit TBC)", cuisine:"Bakery & Cafe", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://tiongbahrubakery.com", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nana's Green Tea", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.nanasgreentea.com/sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Go-Ang Pratunam Chicken Rice", unit:"B2 (unit TBC)", cuisine:"Thai", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only, expect queues", website:"https://www.instagram.com/goangsg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Cajun On Wheels", unit:"B2 (unit TBC)", cuisine:"Seafood", type:"Restaurant", halal:true, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cajunonwheels", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Co Chung Restaurant", unit:"B2 (unit TBC)", cuisine:"Vietnamese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/cochungsg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Da Xi", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/daxisg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Seorae Jib", unit:"Level 4 (unit TBC)", cuisine:"Korean", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Reservation recommended, call outlet", website:"https://www.instagram.com/seoraejibsg", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Ba Shu Sichuan Restaurant", unit:"Level 3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/bashusichuan", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Keming Bing Sat", unit:"Level 2 (unit TBC)", cuisine:"Hong Kong", type:"Cafe", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/kemingbingsat", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"GyoGyo Japanese Grilled Fish & Sukiyaki", unit:"Level 3 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/gyogyo.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Bizen Wagyu & Salad Bar", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.bizen.com.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Nunsaram Korean Dessert Cafe", unit:"Level 2 (unit TBC)", cuisine:"Korean", type:"Dessert", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/nunsaram.sg", online:"foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Café & Meal MUJI", unit:"Level 1 (unit TBC)", cuisine:"Japanese", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.muji.com.sg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Tsukada Nojo", unit:"Level 4 (unit TBC)", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/tsukadanojosg", online:"GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Arteastiq DePatio", unit:"Level 1 (unit TBC)", cuisine:"Western", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Book via Chope", website:"https://www.arteastiq.com", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Mamma Mia Trattoria E Caffè", unit:"Level 1–2 (unit TBC)", cuisine:"Italian", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.instagram.com/mammamiasg", online:"Not available"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"CHAGEE", unit:"#01-58/59", cuisine:"Chinese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chagee.sg", online:"CHAGEE App / GrabFood"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"KOI Thé", unit:"#01-68 (Express) / #B2-11", cuisine:"Taiwanese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.koithe.com", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Chicha San Chen", unit:"#B1-K7", cuisine:"Taiwanese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.chichasanchen.com.sg", online:"GrabFood / foodpanda / Deliveroo"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Toast Box", unit:"#01-23", cuisine:"Singaporean", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.toastbox.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"Plaza Singapura", addr:"68 Orchard Road, S238839 · linked to Dhoby Ghaut MRT", name:"Killiney Kopitiam", unit:"Level 1 (unit TBC)", cuisine:"Singaporean", type:"Beverages", halal:false, veg:true, phone:"6734 3910", reserveNote:"Walk-in only", website:"https://www.killiney.com.sg", online:"foodpanda"},
 
   // ---------------- CONCORDE SHOPPING MALL ----------------
-  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Gayatri Restaurant", unit:"#01-05", cuisine:"Indian", type:"Restaurant", halal:false, phone:"6732 5273", reserveNote:"Call to reserve", website:"", online:"Not available"},
-  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Moe Moe Sandwich", unit:"#02-62", cuisine:"Cafe Bites", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Yakinikutei Ao-Chan", unit:"#02-22/26", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"6735 6457", reserveNote:"Call to reserve", website:"", online:"Not available"},
-  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Spices Cafe (Concorde Hotel)", unit:"Concorde Hotel, Level 2", cuisine:"Peranakan / Local", type:"Restaurant", halal:false, phone:"6733 8855", reserveNote:"Call or reserve via hotel website", website:"https://www.concorde.com.sg/singapore/spices-cafe", online:"Not available"},
-  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Concorde Hotel Basement Food Court", unit:"Basement", cuisine:"Multi-cuisine", type:"Food Court", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Yakinikutei Ao-Chan", unit:"#02-22/26", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"6735 6457", reserveNote:"Call to reserve", website:"", online:"Not available"},
+  {mall:"Concorde Shopping Mall", addr:"100 Orchard Road, S238840 · attached to Concorde Hotel Singapore", name:"Spices Cafe (Concorde Hotel)", unit:"Concorde Hotel, Level 2", cuisine:"Peranakan / Local", type:"Restaurant", halal:false, veg:true, phone:"6733 8855", reserveNote:"Call or reserve via hotel website", website:"https://www.concorde.com.sg/singapore/spices-cafe", online:"Not available"},
 
   // ---------------- 313@SOMERSET ----------------
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Haidilao Hot Pot", unit:"B3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Marché Mövenpick", unit:"#01-40", cuisine:"Western", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.marche-mövenpick.com", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Tan Yu", unit:"#B3-30-32", cuisine:"Chinese", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.tanyu.sg", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Privé", unit:"#01-28", cuisine:"Western", type:"Bar & Grill", halal:false, phone:"", reserveNote:"Reservation recommended, book via website", website:"https://www.theprivegroup.com.sg", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Food Republic", unit:"#05-01-03", cuisine:"Multi-cuisine", type:"Food Court", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.foodrepublic.com.sg", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chir Chir Fusion Chicken Factory", unit:"#B3-05/06", cuisine:"Korean", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chirchirsg", online:"GrabFood"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Go Noodle House", unit:"#B3-37/38", cuisine:"Asian", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Mrs Pho", unit:"#01-16/17", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/mrsphosg", online:"foodpanda"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Sushi Express", unit:"#B3-28/29", cuisine:"Japanese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.sushiexpress.com.sg", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"The Coffee Academïcs", unit:"#01-25/25A", cuisine:"Cafe Bites", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://thecoffeeacademics.com", online:"GrabFood / foodpanda"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chimi's", unit:"Al fresco, near H&M (unit TBC)", cuisine:"Mexican", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chimis.sg", online:"GrabFood"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"JiBiru Yakitori & Craft Beer", unit:"Discovery Walk, al fresco (unit TBC)", cuisine:"Japanese", type:"Bar", halal:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/jibiru.sg", online:"Not available"},
-  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Rocky Master", unit:"#B3-35/36", cuisine:"Asian & Western Fusion", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/rockymastersg", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Haidilao Hot Pot", unit:"B3 (unit TBC)", cuisine:"Chinese", type:"Restaurant", halal:false, veg:true, phone:"6816 6663", reserveNote:"Call or book via Haidilao App", website:"https://www.haidilao.com.sg", online:"Haidilao Delivery"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Marché Mövenpick", unit:"#01-40", cuisine:"Western", type:"Restaurant", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.marche-mövenpick.com", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Tan Yu", unit:"#B3-30-32", cuisine:"Chinese", type:"Restaurant", halal:false, veg:true, phone:"", reserveNote:"Book via Chope", website:"https://www.tanyu.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Privé", unit:"#01-28", cuisine:"Western", type:"Bar & Grill", halal:false, veg:false, phone:"", reserveNote:"Reservation recommended, book via website", website:"https://www.theprivegroup.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Food Republic", unit:"#05-01-03", cuisine:"Multi-cuisine", type:"Food Court", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.foodrepublic.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chir Chir Fusion Chicken Factory", unit:"#B3-05/06", cuisine:"Korean", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chirchirsg", online:"GrabFood"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Go Noodle House", unit:"#B3-37/38", cuisine:"Asian", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Mrs Pho", unit:"#01-16/17", cuisine:"Vietnamese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/mrsphosg", online:"foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Sushi Express", unit:"#B3-28/29", cuisine:"Japanese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.sushiexpress.com.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"The Coffee Academïcs", unit:"#01-25/25A", cuisine:"Cafe Bites", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://thecoffeeacademics.com", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chimi's", unit:"Al fresco, near H&M (unit TBC)", cuisine:"Mexican", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chimis.sg", online:"GrabFood"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"JiBiru Yakitori & Craft Beer", unit:"Discovery Walk, al fresco (unit TBC)", cuisine:"Japanese", type:"Bar", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/jibiru.sg", online:"Not available"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Rocky Master", unit:"#B3-35/36", cuisine:"Asian & Western Fusion", type:"Restaurant", halal:true, veg:false, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/rockymastersg", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Chicha San Chen", unit:"#03-41", cuisine:"Taiwanese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.chichasanchen.com.sg", online:"GrabFood / foodpanda / Deliveroo"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Toast Box", unit:"#B2-31 (also #05-01/02/03 Stall 22)", cuisine:"Singaporean", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.toastbox.com.sg", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Ya Kun Kaya Toast", unit:"#01-32/33/34", cuisine:"Singaporean", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.yakun.com", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"KOI Thé Express", unit:"#B3-51", cuisine:"Taiwanese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.koithe.com", online:"GrabFood / foodpanda"},
+  {mall:"313@Somerset", addr:"313 Orchard Road, S238895 · directly above Somerset MRT", name:"Gong Cha", unit:"#02-50", cuisine:"Taiwanese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://gongcha.com.sg", online:"GrabFood / foodpanda"},
 
   // ---------------- ORCHARD GATEWAY ----------------
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"4Fingers Crispy Chicken", unit:"#01-04/05", cuisine:"Asian", type:"Fast Food", halal:true, phone:"6384 0471", reserveNote:"Walk-in only", website:"https://4fingers.com", online:"GrabFood / foodpanda"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Nong Geng Ji", unit:"#B1-13", cuisine:"Chinese (Hunan)", type:"Restaurant", halal:false, phone:"", reserveNote:"Book via Chope", website:"https://www.nonggengji.com.sg", online:"Not available"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Yang Xiao Xian", unit:"#B1-12", cuisine:"Taiwanese", type:"Dessert", halal:false, phone:"9035 6741", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Chan Susu 1994", unit:"#01-10", cuisine:"Beverages & Dessert", type:"Cafe", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Signs A Taste of Vietnam Pho", unit:"#B2-15", cuisine:"Vietnamese", type:"Restaurant", halal:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Sultan Curry", unit:"Unit TBC", cuisine:"Indian Muslim", type:"Restaurant", halal:true, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
-  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Now Pizza", unit:"Unit TBC", cuisine:"Fast Food", type:"Fast Food", halal:true, phone:"", reserveNote:"Walk-in only", website:"", online:"GrabFood / foodpanda"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"4Fingers Crispy Chicken", unit:"#01-04/05", cuisine:"Asian", type:"Fast Food", halal:true, veg:false, phone:"6384 0471", reserveNote:"Walk-in only", website:"https://4fingers.com", online:"GrabFood / foodpanda"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Nong Geng Ji", unit:"#B1-13", cuisine:"Chinese (Hunan)", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Book via Chope", website:"https://www.nonggengji.com.sg", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Yang Xiao Xian", unit:"#B1-12", cuisine:"Taiwanese", type:"Dessert", halal:false, veg:true, phone:"9035 6741", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Chan Susu 1994", unit:"#01-10", cuisine:"Beverages & Dessert", type:"Cafe", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Signs A Taste of Vietnam Pho", unit:"#B2-15", cuisine:"Vietnamese", type:"Restaurant", halal:false, veg:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Sultan Curry", unit:"Unit TBC", cuisine:"Indian Muslim", type:"Restaurant", halal:true, veg:false, phone:"", reserveNote:"Walk-in only", website:"", online:"Not available"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"Now Pizza", unit:"Unit TBC", cuisine:"Fast Food", type:"Fast Food", halal:true, veg:false, phone:"", reserveNote:"Walk-in only", website:"", online:"GrabFood / foodpanda"},
+  {mall:"Orchard Gateway", addr:"277 Orchard Road, S238858 · linked to Somerset MRT & 313@Somerset", name:"CHAGEE", unit:"#01-18", cuisine:"Chinese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"https://www.instagram.com/chagee.sg", online:"CHAGEE App / GrabFood"},
+
+  // ---------------- ORCHARD CENTRAL ----------------
+  {mall:"Orchard Central", addr:"181 Orchard Road, S238896 · linked to Orchard Gateway & Somerset MRT", name:"Molly Tea", unit:"#01-17A", cuisine:"Chinese", type:"Beverages", halal:false, veg:true, phone:"", reserveNote:"Walk-in only", website:"", online:"Molly Tea App"},
 ];
 
-const mallOrder = ["Plaza Singapura","Concorde Shopping Mall","313@Somerset","Orchard Gateway"];
+const mallOrder = ["Plaza Singapura","Concorde Shopping Mall","313@Somerset","Orchard Gateway","Orchard Central"];
 const mallColorClass = {
   "Plaza Singapura":"mall-rose",
   "Concorde Shopping Mall":"mall-mus",
   "313@Somerset":"mall-sage",
-  "Orchard Gateway":"mall-lav"
+  "Orchard Gateway":"mall-lav",
+  "Orchard Central":"mall-rose"
 };
 
-let state = { search:"", halal:false, mall:"all", cuisine:"all", type:"all" };
+let state = { search:"", halal:false, veg:false, bev:false, mall:"all", cuisine:"all", type:"all" };
 
 function uniqueSorted(arr){ return [...new Set(arr)].sort(); }
 
@@ -554,6 +598,8 @@ function buildFilterChips(){
 
 function matches(item){
   if(state.halal && !item.halal) return false;
+  if(state.veg && !item.veg) return false;
+  if(state.bev && item.type !== "Beverages") return false;
   if(state.mall !== "all" && item.mall !== state.mall) return false;
   if(state.cuisine !== "all" && item.cuisine !== state.cuisine) return false;
   if(state.type !== "all" && item.type !== state.type) return false;
@@ -589,7 +635,10 @@ function card(item){
     <div class="card">
       <div class="card-top">
         <h3>${item.name}</h3>
-        ${item.halal ? '<span class="halal-badge">✓ Halal</span>' : ''}
+        <div class="badge-row">
+          ${item.halal ? '<span class="halal-badge">✓ Halal</span>' : ''}
+          ${item.veg ? '<span class="veg-badge">🌱 Veg-friendly</span>' : ''}
+        </div>
       </div>
       <div class="unit">📍 ${item.unit}</div>
       <div class="tag-row">
@@ -612,7 +661,7 @@ function render(){
   const countEl = document.getElementById('resultsCount');
   const clearEl = document.getElementById('clearFilters');
 
-  const anyFilterActive = state.search || state.halal || state.mall!=="all" || state.cuisine!=="all" || state.type!=="all";
+  const anyFilterActive = state.search || state.halal || state.veg || state.bev || state.mall!=="all" || state.cuisine!=="all" || state.type!=="all";
   clearEl.style.display = anyFilterActive ? 'inline' : 'none';
 
   countEl.textContent = `Showing ${filtered.length} of ${DATA.length} outlets`;
@@ -657,6 +706,20 @@ halalToggle.addEventListener('click', ()=>{
   render();
 });
 
+const vegToggle = document.getElementById('vegToggle');
+vegToggle.addEventListener('click', ()=>{
+  state.veg = !state.veg;
+  vegToggle.classList.toggle('on', state.veg);
+  render();
+});
+
+const bevToggle = document.getElementById('bevToggle');
+bevToggle.addEventListener('click', ()=>{
+  state.bev = !state.bev;
+  bevToggle.classList.toggle('on', state.bev);
+  render();
+});
+
 document.querySelectorAll('.stop').forEach(stop=>{
   stop.addEventListener('click', ()=>{
     state.mall = stop.dataset.mall;
@@ -667,9 +730,11 @@ document.querySelectorAll('.stop').forEach(stop=>{
 });
 
 document.getElementById('clearFilters').addEventListener('click', ()=>{
-  state = { search:"", halal:false, mall:"all", cuisine:"all", type:"all" };
+  state = { search:"", halal:false, veg:false, bev:false, mall:"all", cuisine:"all", type:"all" };
   document.getElementById('searchInput').value = "";
   halalToggle.classList.remove('on');
+  vegToggle.classList.remove('on');
+  bevToggle.classList.remove('on');
   document.querySelectorAll('.stop').forEach(s=>s.classList.remove('active'));
   document.querySelector('.stop[data-mall="all"]').classList.add('active');
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
