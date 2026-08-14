@@ -1,8 +1,11 @@
+[README.md](https://github.com/user-attachments/files/31050684/README.md)
 # Orchard Bites — F&B Directory
 
 A single-page, static F&B directory covering the malls near Concorde Hotel Singapore
 between Dhoby Ghaut and Somerset: Plaza Singapura, Concorde Shopping Mall,
-313@Somerset, and Orchard Gateway.
+313@Somerset, Orchard Gateway, and Orchard Central — including the area's
+bubble tea and kopitiam scene (CHAGEE, Molly Tea, KOI Thé, Chicha San Chen,
+Toast Box, Killiney Kopitiam, Ya Kun, Gong Cha).
 
 Pure HTML/CSS/JS — no build step, no dependencies, no backend. This makes it a
 zero-config static deploy on Vercel.
@@ -71,12 +74,18 @@ All outlet data lives in the `DATA` array near the bottom of `index.html`
   cuisine: "Western",
   type: "Restaurant",
   halal: true,
+  veg: false,
   phone: "",
   reserveNote: "Walk-in / large groups call ahead",
   website: "https://www.nandos.com.sg",
   online: "Nando's App / GrabFood"
 }
 ```
+
+`veg: true` marks outlets with a solid vegetarian menu or clearly veg-friendly
+format (Indian restaurants, food courts, bakeries/cafes, hot pot with veggie
+broths, etc.) — it does not mean 100% vegetarian, just that a vegetarian diner
+has real options there.
 
 Add, remove, or edit entries directly — the search bar, halal toggle, and
 cuisine/type filters all rebuild automatically from whatever is in `DATA`.
@@ -88,4 +97,10 @@ number, phone line, or reservation link. Entries marked `"unit TBC"` or with
 `reserveNote: "Walk-in only"` are placeholders based on the best public
 information available at time of writing — verify against each mall's live
 store directory (CapitaLand for Plaza Singapura, 313somerset.com.sg,
-orchardgateway.com.sg) before treating this as authoritative.
+orchardgateway.com.sg) before treating this as authoritative. The same caution
+applies to the `halal` and `veg` flags — both were set from public menu/brand
+info, not a live certification feed, so double-check with the outlet directly
+for dietary-critical visits. Outlets with `type: "Beverages"` (bubble tea,
+kopitiam coffee, milk tea) power the "Beverages only" toggle at the top of
+the page — add `type: "Beverages"` to any new drink stall you add and it'll
+pick it up automatically.
